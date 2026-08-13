@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>금등어 (The Mackerel) | 500℃ 화덕 생선구이 & CRM 관리자</title>
+  <meta name="description" content="누룩소금 48시간 숙성과 500℃ 화산석 화덕으로 구워낸 명품 고등어구이, 정갈한 솥밥 한상 금등어(The Mackerel)" />
+
+  <!-- Google Fonts: Noto Sans KR, Cormorant Garamond, Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- React 18 & Babel Standalone CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    @charset "UTF-8";
+
+    :root {
+      --bg-main: #FAF8F5;
+      --bg-subtle: #F4EFEA;
+      --bg-card: #FFFFFF;
+      --bg-dark: #191614;
+      --bg-dark-surface: #24201D;
+      --bg-dark-card: #2F2A26;
+
+      --gold-primary: #C5A880;
+      --gold-light: #E2D3BE;
+      --gold-dark: #9A7C54;
+      --gold-gradient: linear-gradient(135deg, #DFCAAC 0%, #C5A880 50%, #9A7C54 100%);
+      --gold-glow: rgba(197, 168, 128, 0.25);
+
+      --flame-primary: #C85A32;
+      --flame-hover: #B04924;
+      --flame-soft: #FDF2ED;
+
+      --text-primary: #2C2825;
+      --text-secondary: #6B635B;
+      --text-muted: #9E958C;
+      --text-inverse: #FAF8F5;
+
+      --border-light: rgba(44, 40, 37, 0.08);
+      --border-warm: rgba(197, 168, 128, 0.3);
+      --border-dark: rgba(255, 255, 255, 0.1);
+
+      --shadow-sm: 0 2px 8px rgba(44, 40, 37, 0.04);
+      --shadow-md: 0 8px 24px rgba(44, 40, 37, 0.08);
+      --shadow-lg: 0 16px 40px rgba(44, 40, 37, 0.12);
+      --shadow-gold: 0 8px 30px rgba(197, 168, 128, 0.28);
+      --shadow-dark: 0 12px 36px rgba(0, 0, 0, 0.35);
+
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      line-height: 1.65;
+      overflow-x: hidden;
+      letter-spacing: -0.02em;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-subtle);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D8CEBE;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--gold-primary);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: inherit;
+      outline: none;
+      border: none;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .font-brand-en {
+      font-family: 'Cormorant Garamond', 'Outfit', serif;
+    }
+
+    .text-gold-gradient {
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .container-custom {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .section-padding {
+      padding: 6rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .section-padding {
+        padding: 4rem 0;
+      }
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-lg);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .badge-gold {
+      background: linear-gradient(135deg, #FBF6EE 0%, #F5E8D3 100%);
+      color: var(--gold-dark);
+      border: 1px solid var(--gold-light);
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-full);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .btn-primary {
+      background: var(--gold-gradient);
+      color: #191614;
+      font-weight: 600;
+      padding: 0.875rem 1.875rem;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-gold);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.3s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(197, 168, 128, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--text-primary);
+      border: 1px solid var(--border-warm);
+      font-weight: 600;
+      padding: 0.875rem 1.875rem;
+      border-radius: var(--radius-md);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.3s;
+    }
+
+    .btn-secondary:hover {
+      background: #FFFFFF;
+      border-color: var(--gold-primary);
+      transform: translateY(-2px);
+    }
+
+    .btn-dark {
+      background: var(--bg-dark-surface);
+      color: var(--gold-light);
+      border: 1px solid var(--border-dark);
+      font-weight: 600;
+      padding: 0.875rem 1.875rem;
+      border-radius: var(--radius-md);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.3s;
+    }
+
+    .btn-dark:hover {
+      background: #332D28;
+      color: #FFFFFF;
+      border-color: var(--gold-primary);
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- Main React Application Script -->
+  <script type="text/babel">
+    const { useState, useEffect, useMemo, useRef } = React;
+
+    // --- Lucide Icon Helper ---
+    const Icon = ({ name, size = 18, color = "currentColor", style = {}, className = "" }) => {
+      const ref = useRef(null);
+      useEffect(() => {
+        if (window.lucide && ref.current) {
+          window.lucide.createIcons({
+            root: ref.current.parentElement
+          });
+        }
+      }, [name]);
+
+      return (
+        <span ref={ref} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', ...style }} className={className}>
+          <i data-lucide={name} style={{ width: size, height: size, color: color, display: 'inline-block' }}></i>
+        </span>
+      );
+    };
+
+    // ==========================================
+    // DATA & PRESETS
+    // ==========================================
+    const VIDEO_PRESETS = [
+      {
+        id: 'preset-oven-flame',
+        name: '500℃ 화산석 화덕 & 생선구이 (추천)',
+        url: 'https://assets.mixkit.co/videos/preview/mixkit-chef-cooking-in-a-pan-over-high-heat-43093-large.mp4',
+        thumbnail: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'preset-fire-grill',
+        name: '황금빛 참숯 직화 그릴',
+        url: 'https://assets.mixkit.co/videos/preview/mixkit-sparks-of-a-fire-in-the-dark-42488-large.mp4',
+        thumbnail: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'preset-ocean-wave',
+        name: '제주 청정 바다와 파도',
+        url: 'https://assets.mixkit.co/videos/preview/mixkit-sea-waves-crashing-on-the-beach-rocks-43187-large.mp4',
+        thumbnail: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 'preset-dining-steam',
+        name: '정갈한 한식 솥밥 한상',
+        url: 'https://assets.mixkit.co/videos/preview/mixkit-boiling-water-in-a-transparent-pot-42998-large.mp4',
+        thumbnail: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80'
+      }
+    ];
+
+    const DEFAULT_HERO_SETTINGS = {
+      videoUrl: VIDEO_PRESETS[0].url,
+      videoPresetId: VIDEO_PRESETS[0].id,
+      mainCopy: '500℃ 황금빛 화덕에서 완성되는 바다의 깊은 풍미',
+      subCopy1: '누룩소금으로 48시간 정성껏 저온 숙성한 명품 고등어',
+      subCopy2: '갓 지은 계절 솥밥과 함께 누리는 가장 정갈하고 품격 있는 한 상',
+      fontFamily: 'Noto Sans KR',
+      fontWeight: '800',
+      textColor: '#FAF8F5',
+      overlayOpacity: 0.45
+    };
+
+    const INITIAL_POPUPS = [
+      {
+        id: 'popup-1',
+        title: '금등어 들안길 본점 리뉴얼 오픈 기념 혜택',
+        badge: '특별 이벤트',
+        description: '48시간 누룩소금 숙성 화덕 고등어구이 2인 이상 주문 시, 시그니처 곤드레 솥밥 무료 업그레이드 제공!',
+        imageUrl: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80',
+        linkText: '예약하고 혜택받기',
+        linkUrl: '#reservation',
+        startDate: '2026-08-01',
+        endDate: '2026-08-31',
+        isActive: true
+      },
+      {
+        id: 'popup-2',
+        title: '카카오톡 채널 추가 시 3,000P 즉시 지급',
+        badge: '멤버십 혜택',
+        description: '금등어 카카오 채널을 추가하고 첫 방문 시 제시하시면 즉시 할인 또는 포인트 적립이 가능합니다.',
+        imageUrl: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=800&q=80',
+        linkText: '채널 추가하기',
+        linkUrl: 'https://pf.kakao.com/_xgjxjxgG',
+        startDate: '2026-08-01',
+        endDate: '2026-09-30',
+        isActive: false
+      }
+    ];
+
+    const INITIAL_CUSTOMERS = [
+      { id: 'CUST-001', name: '김지현', phone: '010-8742-9102', email: 'jihyun.kim@gmail.com', gender: 'female', ageGroup: '30s', grade: 'VIP', totalSpent: 1840000, orderCount: 18, points: 45000, recentVisit: '2026-08-12', joinDate: '2025-03-14', favoriteMenu: '화덕 고등어구이 솥밥 한상', memo: '들안길 단골 손님, 창가 자리 선호' },
+      { id: 'CUST-002', name: '박성민', phone: '010-3391-4521', email: 'sungmin.park@naver.com', gender: 'male', ageGroup: '40s', grade: 'VIP', totalSpent: 2450000, orderCount: 22, points: 62000, recentVisit: '2026-08-11', joinDate: '2025-01-20', favoriteMenu: '특선 고등어조림 & 곤드레 솥밥', memo: '비즈니스 식사 모임 자주 예약' },
+      { id: 'CUST-003', name: '이지은', phone: '010-5629-1094', email: 'jieun.lee@kakao.com', gender: 'female', ageGroup: '20s', grade: 'GOLD', totalSpent: 920000, orderCount: 9, points: 18500, recentVisit: '2026-08-10', joinDate: '2025-06-11', favoriteMenu: '누룩숙성 화덕 삼치구이', memo: '인스타그램 리뷰 작성 고객' },
+      { id: 'CUST-004', name: '최원우', phone: '010-9012-7741', email: 'wonwoo.choi@daum.net', gender: 'male', ageGroup: '50s', grade: 'VIP', totalSpent: 3100000, orderCount: 28, points: 89000, recentVisit: '2026-08-13', joinDate: '2024-11-05', favoriteMenu: '화덕 고등어구이 솥밥 한상', memo: '가족 외식 모임 4인 이상 예약' },
+      { id: 'CUST-005', name: '정유나', phone: '010-6318-9923', email: 'yuna.jung@naver.com', gender: 'female', ageGroup: '30s', grade: 'SILVER', totalSpent: 480000, orderCount: 5, points: 9600, recentVisit: '2026-08-08', joinDate: '2025-09-01', favoriteMenu: '제주 흑돼지 직화 제육볶음', memo: '점심 특선 자주 이용' },
+      { id: 'CUST-006', name: '강민재', phone: '010-4491-0329', email: 'minjae.kang@gmail.com', gender: 'male', ageGroup: '30s', grade: 'GOLD', totalSpent: 860000, orderCount: 8, points: 17200, recentVisit: '2026-08-09', joinDate: '2025-05-18', favoriteMenu: '화덕 고등어구이 솥밥 한상', memo: '주말 데이트 코스로 방문' },
+      { id: 'CUST-007', name: '윤서연', phone: '010-2219-5839', email: 'seoyeon.yoon@kakao.com', gender: 'female', ageGroup: '40s', grade: 'SILVER', totalSpent: 520000, orderCount: 5, points: 10400, recentVisit: '2026-08-05', joinDate: '2025-10-12', favoriteMenu: '특제 고등어 묵은지조림', memo: '포장 주문 경험 있음' },
+      { id: 'CUST-008', name: '한도현', phone: '010-7128-4490', email: 'dohyun.han@naver.com', gender: 'male', ageGroup: '60s', grade: 'VIP', totalSpent: 2890000, orderCount: 24, points: 75000, recentVisit: '2026-08-12', joinDate: '2024-10-01', favoriteMenu: '화덕 고등어구이 솥밥 한상', memo: '지인 추천 방문, 솥밥 누룽지 선호' },
+      { id: 'CUST-009', name: '송태민', phone: '010-8201-6673', email: 'taemin.song@gmail.com', gender: 'male', ageGroup: '30s', grade: '일반', totalSpent: 75000, orderCount: 1, points: 2000, recentVisit: '2026-08-13', joinDate: '2026-08-13', favoriteMenu: '화덕 고등어구이 솥밥 한상', memo: '방금 전 신규 가입' }
+    ];
+
+    for (let i = 10; i <= 60; i++) {
+      const names = ['유준상', '서민지', '권태형', '황보라', '안재현', '배수지', '홍기범', '문소리', '남궁민', '조보아'];
+      const name = `${names[i % names.length]}${Math.floor(i / names.length)}`;
+      const genders = ['female', 'male'];
+      const ageGroups = ['20s', '30s', '40s', '50s', '60s'];
+      const grades = ['일반', 'BRONZE', 'SILVER', 'GOLD', 'VIP'];
+      const gradeIdx = i % 5;
+      const orderCount = gradeIdx === 4 ? (15 + (i % 10)) : gradeIdx === 3 ? (7 + (i % 5)) : gradeIdx === 2 ? (4 + (i % 3)) : (1 + (i % 2));
+      const totalSpent = orderCount * 95000;
+      INITIAL_CUSTOMERS.push({
+        id: `CUST-${i.toString().padStart(3, '0')}`,
+        name,
+        phone: `010-${(1100 + i * 83) % 9000}-${(2100 + i * 147) % 9000}`,
+        email: `customer${i}@geumdeungeo.com`,
+        gender: genders[i % 2],
+        ageGroup: ageGroups[i % 5],
+        grade: grades[gradeIdx],
+        totalSpent,
+        orderCount,
+        points: Math.floor(totalSpent * 0.02),
+        recentVisit: `2026-08-${(31 - (i % 20)).toString().padStart(2, '0')}`,
+        joinDate: `2025-0${(i % 9) + 1}-15`,
+        favoriteMenu: '화덕 고등어구이 솥밥 한상',
+        memo: `단골 회원 #${i}`
+      });
+    }
+
+    const MENU_ITEMS = [
+      {
+        id: 'menu-1',
+        category: 'grill',
+        name: '화덕 고등어구이 솥밥 한상',
+        englishName: 'Signature Wood-Fired Mackerel Set',
+        price: 19000,
+        badge: '대표 시그니처',
+        isBest: true,
+        image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=800&q=80',
+        description: '48시간 누룩소금으로 저온 숙성한 통통한 고등어를 500℃ 화덕에서 구워내어 갓 지은 곤드레 솥밥과 함께 차려내는 금등어의 대표 메뉴입니다.',
+        includes: ['화덕 고등어구이 1마리', '갓 지은 제주 곤드레 솥밥', '제철 8첩 반찬 & 쌈채소', '시골 된장찌개', '숭늉 누룽지'],
+        origin: '고등어(국내산 제주), 쌀(국내산 상주특등급), 곤드레(제주산)'
+      },
+      {
+        id: 'menu-2',
+        category: 'grill',
+        name: '누룩숙성 화덕 삼치구이 한상',
+        englishName: 'Wood-Fired Spanish Mackerel Set',
+        price: 21000,
+        badge: '인기',
+        isBest: true,
+        image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80',
+        description: '부드럽고 담백한 삼치 순살을 누룩소금으로 촉촉하게 숙성하여 화덕에서 구워냅니다. 어린이나 부모님께 강력 추천합니다.',
+        includes: ['화덕 삼치구이 특대', '갓 지은 솥밥', '제철 8첩 반찬', '시골 된장찌개', '숭늉 누룽지'],
+        origin: '삼치(국내산 남해), 쌀(국내산)'
+      },
+      {
+        id: 'menu-3',
+        category: 'braised',
+        name: '특선 고등어 묵은지조림 정식',
+        englishName: 'Braised Mackerel with Aged Kimchi',
+        price: 24000,
+        badge: '특선 별미',
+        isBest: false,
+        image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80',
+        description: '해남 2년 숙성 묵은지와 싱싱한 고등어, 비법 천연 과일 양념장으로 자작하게 졸여내어 밥도둑을 자처하는 깊고 칼칼한 조림입니다.',
+        includes: ['특선 고등어 묵은지조림 (2인 이상)', '영양 솥밥', '제철 반찬', '신선 쌈채소'],
+        origin: '고등어(국내산), 묵은지(국내산 해남 배추/고춧가루)'
+      },
+      {
+        id: 'menu-4',
+        category: 'grill',
+        name: '제주 은갈치 구이 한상',
+        englishName: 'Jeju Hairtail Fish Set',
+        price: 29000,
+        badge: '프리미엄',
+        isBest: false,
+        image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
+        description: '제주 청정 해역에서 당일 조업한 특대형 은갈치만을 엄선하여 화덕의 강한 불꽃으로 촉촉함을 극대화한 명품 한상입니다.',
+        includes: ['제주 은갈치 구이 특대', '전복 영양 솥밥', '제철 8첩 반찬', '성게 미역국'],
+        origin: '은갈치(국내산 제주), 전복(국내산 완도)'
+      },
+      {
+        id: 'menu-5',
+        category: 'side',
+        name: '제주 흑돼지 직화 제육볶음',
+        englishName: 'Spicy Flame Stir-fried Jeju Pork',
+        price: 16000,
+        badge: '곁들임 최고',
+        isBest: false,
+        image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80',
+        description: '제주 흑돼지 생육을 불향 가득 직화로 볶아내어, 생선구이와 함께 곁들이기 가장 좋은 풍성한 단품 요리입니다.',
+        includes: ['직화 흑돼지 제육볶음 (단품)', '신선 쌈채소 & 수제 쌈장'],
+        origin: '돼지고기(국내산 제주 흑돼지)'
+      }
+    ];
+
+    // ==========================================
+    // MAIN APP COMPONENT
+    // ==========================================
+    function App() {
+      const [currentView, setCurrentView] = useState(() => {
+        return window.location.hash.includes('admin') ? 'admin' : 'home';
+      });
+      const [adminTab, setAdminTab] = useState('dashboard');
+
+      const [heroSettings, setHeroSettings] = useState(() => {
+        try {
+          const s = localStorage.getItem('geumdeungeo_hero_settings');
+          return s ? JSON.parse(s) : DEFAULT_HERO_SETTINGS;
+        } catch { return DEFAULT_HERO_SETTINGS; }
+      });
+
+      const [popups, setPopups] = useState(() => {
+        try {
+          const s = localStorage.getItem('geumdeungeo_popups');
+          return s ? JSON.parse(s) : INITIAL_POPUPS;
+        } catch { return INITIAL_POPUPS; }
+      });
+
+      const [customers, setCustomers] = useState(() => {
+        try {
+          const s = localStorage.getItem('geumdeungeo_crm_customers');
+          return s ? JSON.parse(s) : INITIAL_CUSTOMERS;
+        } catch { return INITIAL_CUSTOMERS; }
+      });
+
+      const [user, setUser] = useState(null);
+      const [authModalOpen, setAuthModalOpen] = useState(false);
+      const [authMode, setAuthMode] = useState('login');
+      const [activePopup, setActivePopup] = useState(null);
+      const [selectedMenu, setSelectedMenu] = useState(null);
+
+      useEffect(() => {
+        localStorage.setItem('geumdeungeo_hero_settings', JSON.stringify(heroSettings));
+      }, [heroSettings]);
+
+      useEffect(() => {
+        localStorage.setItem('geumdeungeo_popups', JSON.stringify(popups));
+      }, [popups]);
+
+      useEffect(() => {
+        localStorage.setItem('geumdeungeo_crm_customers', JSON.stringify(customers));
+      }, [customers]);
+
+      useEffect(() => {
+        const hideDate = localStorage.getItem('geumdeungeo_hide_popup_date');
+        const today = new Date().toISOString().slice(0, 10);
+        if (hideDate !== today) {
+          const act = popups.find(p => p.isActive);
+          if (act) setActivePopup(act);
+        }
+      }, [popups]);
+
+      // CRM Filters State
+      const [filters, setFilters] = useState({
+        gender: 'all',
+        ageGroup: 'all',
+        grade: 'all',
+        frequency: 'all',
+        minSpent: 0,
+        maxSpent: 5000000,
+        searchQuery: ''
+      });
+
+      const filteredCustomers = useMemo(() => {
+        return customers.filter(c => {
+          if (filters.gender !== 'all' && c.gender !== filters.gender) return false;
+          if (filters.ageGroup !== 'all' && c.ageGroup !== filters.ageGroup) return false;
+          if (filters.grade !== 'all' && c.grade !== filters.grade) return false;
+          if (filters.frequency === 'weekly' && c.orderCount < 10) return false;
+          if (filters.frequency === 'monthly' && (c.orderCount < 4 || c.orderCount >= 10)) return false;
+          if (filters.frequency === 'low' && c.orderCount >= 4) return false;
+          if (c.totalSpent < filters.minSpent || c.totalSpent > filters.maxSpent) return false;
+          if (filters.searchQuery.trim()) {
+            const q = filters.searchQuery.toLowerCase();
+            const m = c.name.toLowerCase().includes(q) || c.phone.includes(q) || c.id.toLowerCase().includes(q);
+            if (!m) return false;
+          }
+          return true;
+        });
+      }, [customers, filters]);
+
+      const stats = useMemo(() => {
+        const totalCustomers = customers.length;
+        const totalRevenue = customers.reduce((s, c) => s + c.totalSpent, 0);
+        const totalOrders = customers.reduce((s, c) => s + c.orderCount, 0);
+        const totalPoints = customers.reduce((s, c) => s + c.points, 0);
+        const avgOrderValue = totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0;
+        const gradeCounts = {
+          VIP: customers.filter(c => c.grade === 'VIP').length,
+          GOLD: customers.filter(c => c.grade === 'GOLD').length,
+          SILVER: customers.filter(c => c.grade === 'SILVER').length,
+          BRONZE: customers.filter(c => c.grade === 'BRONZE').length,
+          일반: customers.filter(c => c.grade === '일반').length,
+        };
+        return { totalCustomers, totalRevenue, totalOrders, totalPoints, avgOrderValue, gradeCounts };
+      }, [customers]);
+
+      const exportToCsv = () => {
+        const headers = ['회원번호', '고객명', '연락처', '이메일', '성별', '연령대', '등급', '누적구매액', '주문수', '포인트', '최근방문일', '가입일'];
+        const rows = filteredCustomers.map(c => [c.id, c.name, c.phone, c.email, c.gender === 'female' ? '여성' : '남성', c.ageGroup, c.grade, c.totalSpent, c.orderCount, c.points, c.recentVisit, c.joinDate]);
+        const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+        const link = document.createElement('a');
+        link.setAttribute('href', encodeURI(csvContent));
+        link.setAttribute('download', `금등어_고객명단_${new Date().toISOString().slice(0, 10)}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+
+      return (
+        <div>
+          {currentView === 'home' ? (
+            <div>
+              {/* Navbar */}
+              <header style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000, background: 'rgba(25, 22, 20, 0.94)', backdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(197, 168, 128, 0.2)', padding: '0 1.5rem' }}>
+                <div className="container-custom" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '76px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer' }} onClick={() => setCurrentView('home')}>
+                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--gold-gradient)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Icon name="flame" size={22} color="#191614" />
+                    </div>
+                    <div>
+                      <span style={{ fontSize: '1.4rem', fontWeight: 800, color: '#FAF8F5' }}>금등어</span>
+                      <span className="font-brand-en" style={{ fontSize: '0.75rem', color: 'var(--gold-primary)', display: 'block', letterSpacing: '0.18em' }}>THE MACKEREL</span>
+                    </div>
+                  </div>
+
+                  <nav style={{ display: 'flex', gap: '2rem' }}>
+                    <a href="#story" style={{ color: '#FAF8F5', fontWeight: 600, fontSize: '0.95rem' }}>브랜드 철학</a>
+                    <a href="#menu" style={{ color: '#FAF8F5', fontWeight: 600, fontSize: '0.95rem' }}>시그니처 메뉴</a>
+                    <a href="#instagram" style={{ color: '#FAF8F5', fontWeight: 600, fontSize: '0.95rem' }}>인스타 & 후기</a>
+                    <a href="#reservation" style={{ color: '#FAF8F5', fontWeight: 600, fontSize: '0.95rem' }}>오시는 길 & 예약</a>
+                  </nav>
+
+                  <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                    {user ? (
+                      <div style={{ color: 'var(--gold-light)', fontSize: '0.875rem' }}>
+                        {user.name} 님 <button onClick={() => setUser(null)} style={{ background: 'none', color: '#9E958C', textDecoration: 'underline', marginLeft: '0.4rem' }}>로그아웃</button>
+                      </div>
+                    ) : (
+                      <button onClick={() => { setAuthMode('login'); setAuthModalOpen(true); }} style={{ background: 'rgba(255,255,255,0.1)', color: '#FAF8F5', border: '1px solid rgba(255,255,255,0.2)', padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', fontSize: '0.875rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                        <Icon name="log-in" size={15} />
+                        <span>로그인 / 회원가입</span>
+                      </button>
+                    )}
+
+                    <button onClick={() => setCurrentView('admin')} style={{ background: 'linear-gradient(135deg, #3A322C 0%, #24201D 100%)', color: 'var(--gold-light)', border: '1px solid var(--gold-dark)', padding: '0.5rem 1.1rem', borderRadius: 'var(--radius-md)', fontSize: '0.875rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <Icon name="shield-check" size={16} />
+                      <span>관리자 페이지 (/admin)</span>
+                    </button>
+                  </div>
+                </div>
+              </header>
+
+              {/* 1. Hero Section (Video Background + Left Main/Sub Copy) */}
+              <section style={{ position: 'relative', width: '100%', height: '100vh', minHeight: '700px', display: 'flex', alignItems: 'center', background: '#191614', overflow: 'hidden' }}>
+                <video key={heroSettings.videoUrl} autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1, filter: 'brightness(0.9)' }}>
+                  <source src={heroSettings.videoUrl} type="video/mp4" />
+                </video>
+                <div style={{ position: 'absolute', inset: 0, zIndex: 2, background: `linear-gradient(to right, rgba(15,12,10,${heroSettings.overlayOpacity * 1.5}) 0%, rgba(15,12,10,${heroSettings.overlayOpacity}) 60%, rgba(15,12,10,0.3) 100%)` }} />
+
+                <div className="container-custom" style={{ position: 'relative', zIndex: 10, width: '100%', paddingTop: '3rem' }}>
+                  <div style={{ maxWidth: '820px' }}>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(197, 168, 128, 0.15)', border: '1px solid rgba(197, 168, 128, 0.4)', padding: '0.45rem 1.1rem', borderRadius: 'var(--radius-full)', color: 'var(--gold-light)', fontSize: '0.875rem', fontWeight: 600, marginBottom: '1.5rem' }}>
+                      <Icon name="sparkles" size={15} color="var(--gold-primary)" />
+                      <span>들안길 명품 화덕 생선구이 전문점</span>
+                    </div>
+
+                    <h1 style={{ fontFamily: heroSettings.fontFamily, fontSize: 'clamp(2.2rem, 5vw, 3.8rem)', fontWeight: heroSettings.fontWeight, color: heroSettings.textColor, lineHeight: 1.25, marginBottom: '1.5rem', textShadow: '0 4px 20px rgba(0,0,0,0.7)' }}>
+                      {heroSettings.mainCopy}
+                    </h1>
+
+                    <div style={{ fontSize: 'clamp(1.05rem, 2vw, 1.35rem)', color: '#E6DFD5', lineHeight: 1.7, marginBottom: '2.5rem', textShadow: '0 2px 10px rgba(0,0,0,0.6)' }}>
+                      <p style={{ margin: 0, fontWeight: 500 }}>{heroSettings.subCopy1}</p>
+                      <p style={{ margin: 0, opacity: 0.9 }}>{heroSettings.subCopy2}</p>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                      <a href="#reservation" className="btn-primary" style={{ fontSize: '1.05rem', padding: '1rem 2.2rem' }}>
+                        <Icon name="calendar-check" size={20} />
+                        <span>들안길 본점 예약하기</span>
+                      </a>
+                      <a href="#menu" className="btn-secondary" style={{ fontSize: '1.05rem', padding: '1rem 2.2rem', background: 'rgba(255,255,255,0.15)', color: '#FAF8F5', borderColor: 'rgba(255,255,255,0.3)' }}>
+                        <Icon name="utensils" size={20} />
+                        <span>시그니처 메뉴 보기</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* 2. Brand Story Section */}
+              <section id="story" className="section-padding" style={{ background: 'var(--bg-main)' }}>
+                <div className="container-custom">
+                  <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 4.5rem' }}>
+                    <div className="badge-gold" style={{ marginBottom: '1rem' }}>
+                      <Icon name="award" size={14} />
+                      <span>BRAND PHILOSOPHY</span>
+                    </div>
+                    <h2 style={{ fontSize: '2.6rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '1rem' }}>
+                      바다의 신선함에 <span className="text-gold-gradient">정성과 불의 온기</span>를 더합니다
+                    </h2>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem' }}>
+                      금등어는 48시간의 발효 과학과 500도 화산석 화덕의 폭발적인 화력으로 생선구이의 새로운 기준을 만듭니다.
+                    </p>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
+                    {[
+                      { icon: 'clock', tag: '01. 숙성의 미학', title: '48시간 누룩소금 저온 숙성', desc: '전통 쌀누룩 발효 소금으로 48시간 저온 숙성하여 비린내는 잡고 감칠맛과 촉촉한 육즙을 극대화합니다.' },
+                      { icon: 'flame', tag: '02. 장인의 불꽃', title: '500℃ 화산석 화덕 직화', desc: '순간 온도 500℃의 천연 화산석 화덕에서 겉은 황금빛으로 바삭하게, 속은 벨벳처럼 촉촉하게 구워냅니다.' },
+                      { icon: 'sparkles', tag: '03. 정성의 한 상', title: '당일 도정 갓 지은 솥밥', desc: '주문 즉시 1인 개별 솥에 도정 7일 이내의 특등급 쌀과 제주 곤드레를 담아 가장 향긋한 솥밥을 지어 올립니다.' }
+                    ].map((v, i) => (
+                      <div key={i} className="glass-panel" style={{ padding: '2.5rem 2rem', background: '#FFFFFF' }}>
+                        <div style={{ width: '52px', height: '52px', borderRadius: '12px', background: 'var(--bg-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
+                          <Icon name={v.icon} size={26} color="var(--gold-dark)" />
+                        </div>
+                        <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--gold-dark)', display: 'block', marginBottom: '0.4rem' }}>{v.tag}</span>
+                        <h3 style={{ fontSize: '1.35rem', fontWeight: 800, marginBottom: '0.85rem' }}>{v.title}</h3>
+                        <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.7 }}>{v.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+              {/* 3. Signature Menu Section */}
+              <section id="menu" className="section-padding" style={{ background: 'var(--bg-subtle)' }}>
+                <div className="container-custom">
+                  <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 3.5rem' }}>
+                    <div className="badge-gold" style={{ marginBottom: '1rem' }}>
+                      <Icon name="utensils-crossed" size={14} />
+                      <span>SIGNATURE DINING</span>
+                    </div>
+                    <h2 style={{ fontSize: '2.6rem', fontWeight: 800, marginBottom: '1rem' }}>
+                      정성을 담아 올리는 <span className="text-gold-gradient">금등어 한 상 차림</span>
+                    </h2>
+                    <p style={{ color: 'var(--text-secondary)' }}>모든 정식 메뉴에는 당일 갓 지은 솥밥과 8가지 계절 정갈 반찬, 구수한 된장찌개가 포함됩니다.</p>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '2rem' }}>
+                    {MENU_ITEMS.map(menu => (
+                      <div key={menu.id} onClick={() => setSelectedMenu(menu)} style={{ background: '#FFFFFF', borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '1px solid var(--border-light)', cursor: 'pointer', boxShadow: 'var(--shadow-sm)' }}>
+                        <div style={{ height: '240px', position: 'relative' }}>
+                          <img src={menu.image} alt={menu.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          <span style={{ position: 'absolute', top: '1rem', left: '1rem', background: menu.isBest ? 'var(--gold-gradient)' : 'rgba(25,22,20,0.8)', color: menu.isBest ? '#191614' : '#FFF', padding: '0.3rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 800 }}>
+                            {menu.badge}
+                          </span>
+                        </div>
+                        <div style={{ padding: '1.75rem' }}>
+                          <h3 style={{ fontSize: '1.35rem', fontWeight: 800, marginBottom: '0.5rem' }}>{menu.name}</h3>
+                          <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.25rem' }}>{menu.description}</p>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-light)', paddingTop: '1rem' }}>
+                            <span style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--flame-primary)' }}>₩{menu.price.toLocaleString()}</span>
+                            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--gold-dark)', textDecoration: 'underline' }}>상세보기 +</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+              {/* 4. Instagram & Reviews */}
+              <section id="instagram" className="section-padding" style={{ background: 'var(--bg-main)' }}>
+                <div className="container-custom">
+                  <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 3.5rem' }}>
+                    <div className="badge-gold" style={{ marginBottom: '1rem' }}>
+                      <Icon name="instagram" size={14} />
+                      <span>INSTAGRAM @themackerel_</span>
+                    </div>
+                    <h2 style={{ fontSize: '2.6rem', fontWeight: 800 }}>
+                      고객들이 전하는 <span className="text-gold-gradient">금등어의 미식 경험</span>
+                    </h2>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem', marginBottom: '3.5rem' }}>
+                    {[
+                      { img: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=600&q=80', caption: '500도 화덕에서 구운 겉바속촉 고등어구이 🐟 #금등어 #들안길' },
+                      { img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80', caption: '정갈한 8첩 반찬과 갓 지은 곤드레 솥밥의 완벽한 조화 🍚' },
+                      { img: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80', caption: '담백한 화덕 삼치구이와 칼칼한 묵은지조림 ✨' },
+                      { img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80', caption: '화산석 화덕에서 피어나는 장인의 불꽃 🔥' }
+                    ].map((item, idx) => (
+                      <a key={idx} href="https://www.instagram.com/themackerel_/" target="_blank" rel="noreferrer" style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', height: '260px', position: 'relative', display: 'block' }}>
+                        <img src={item.img} alt="인스타그램 피드" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(25,22,20,0.85) 100%)', display: 'flex', alignItems: 'flex-end', padding: '1rem', color: '#FFF', fontSize: '0.8125rem' }}>
+                          {item.caption}
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+              {/* 5. Store & Reservation */}
+              <section id="reservation" className="section-padding" style={{ background: 'var(--bg-subtle)' }}>
+                <div className="container-custom">
+                  <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 3.5rem' }}>
+                    <div className="badge-gold" style={{ marginBottom: '1rem' }}>
+                      <Icon name="map-pin" size={14} />
+                      <span>VISIT & RESERVATION</span>
+                    </div>
+                    <h2 style={{ fontSize: '2.6rem', fontWeight: 800 }}>
+                      소중한 분과의 미식, <span className="text-gold-gradient">금등어에서 모십니다</span>
+                    </h2>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem' }}>
+                    <div className="glass-panel" style={{ background: '#FFFFFF', padding: '2.5rem' }}>
+                      <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '1.5rem' }}>들안길 본점 안내</h3>
+                      <p style={{ marginBottom: '1rem', color: 'var(--text-secondary)' }}><strong>주소:</strong> 대구광역시 수성구 들안로 (들안길 맛집타운 본점)</p>
+                      <p style={{ marginBottom: '1rem', color: 'var(--text-secondary)' }}><strong>영업시간:</strong> 매일 11:00 ~ 21:30 (브레이크타임 15:30~17:00)</p>
+                      <p style={{ marginBottom: '1.5rem', color: 'var(--text-secondary)' }}><strong>주차:</strong> 전용 대형 주차장 완비 (50대 동시 주차, 무료 발렛)</p>
+                      <a href="https://pf.kakao.com/_xgjxjxgG" target="_blank" rel="noreferrer" className="btn-primary" style={{ width: '100%', padding: '0.9rem' }}>
+                        카카오톡 채널 예약 문의
+                      </a>
+                    </div>
+
+                    <div className="glass-panel" style={{ background: '#FFFFFF', padding: '2.5rem' }}>
+                      <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '1rem' }}>온라인 간편 예약 신청</h3>
+                      <form onSubmit={(e) => { e.preventDefault(); alert('예약 신청이 접수되었습니다! 담당자가 확인 후 문자를 발송해 드립니다.'); }} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <input type="text" required placeholder="예약자 성함" style={{ padding: '0.75rem', background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-sm)' }} />
+                        <input type="tel" required placeholder="연락처 (010-1234-5678)" style={{ padding: '0.75rem', background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-sm)' }} />
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                          <input type="date" required style={{ padding: '0.75rem', background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-sm)' }} />
+                          <select style={{ padding: '0.75rem', background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-sm)' }}>
+                            <option>2인 (테이블)</option>
+                            <option>4인 (테이블)</option>
+                            <option>6인 (프라이빗 룸)</option>
+                            <option>8인 이상 (대형 룸)</option>
+                          </select>
+                        </div>
+                        <button type="submit" className="btn-primary" style={{ padding: '0.9rem' }}>
+                          예약 신청 완료
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Footer */}
+              <footer style={{ background: 'var(--bg-dark)', color: '#B8B0A5', padding: '4rem 0 2rem', borderTop: '1px solid var(--border-dark)' }}>
+                <div className="container-custom" style={{ textAlign: 'center' }}>
+                  <h3 style={{ color: '#FAF8F5', fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.5rem' }}>금등어 (The Mackerel)</h3>
+                  <p style={{ fontSize: '0.9rem', marginBottom: '1.5rem' }}>대구광역시 수성구 들안로 들안길 본점 | 대표전화: 053-765-8892</p>
+                  <p style={{ fontSize: '0.8rem', color: '#7A726A' }}>© 2026 금등어. All rights reserved. 들안길 본점.</p>
+                </div>
+              </footer>
+            </div>
+          ) : (
+            /* ==========================================
+               ADMIN PORTAL (/admin)
+               ========================================== */
+            <div style={{ display: 'flex', minHeight: '100vh', background: '#F5F2EC' }}>
+              {/* Admin Sidebar */}
+              <aside style={{ width: '260px', background: '#191614', color: '#FAF8F5', display: 'flex', flexDirection: 'column', position: 'fixed', top: 0, bottom: 0, left: 0, zIndex: 100, borderRight: '1px solid rgba(197, 168, 128, 0.2)' }}>
+                <div style={{ padding: '1.75rem 1.5rem', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'var(--gold-gradient)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Icon name="flame" size={20} color="#191614" />
+                  </div>
+                  <div>
+                    <h2 style={{ fontSize: '1.15rem', fontWeight: 800, margin: 0 }}>금등어 관리자</h2>
+                    <span className="font-brand-en" style={{ fontSize: '0.7rem', color: 'var(--gold-light)', letterSpacing: '0.12em' }}>CRM & CMS PORTAL</span>
+                  </div>
+                </div>
+
+                <nav style={{ padding: '1.5rem 0.85rem', display: 'flex', flexDirection: 'column', gap: '0.4rem', flex: 1 }}>
+                  {[
+                    { id: 'dashboard', label: '대시보드', icon: 'layout-dashboard' },
+                    { id: 'customers', label: '고객관리 (CRM)', icon: 'users', badge: `${customers.length}명` },
+                    { id: 'reports', label: '통계 / 리포트', icon: 'bar-chart-3' },
+                    { id: 'hero', label: '첫번째 섹션 관리', icon: 'video' },
+                    { id: 'popups', label: '팝업 관리', icon: 'layers' }
+                  ].map(tab => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setAdminTab(tab.id)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '0.8rem 1rem',
+                        borderRadius: 'var(--radius-md)',
+                        color: adminTab === tab.id ? '#191614' : '#C5BEB5',
+                        background: adminTab === tab.id ? 'var(--gold-gradient)' : 'transparent',
+                        fontWeight: adminTab === tab.id ? 700 : 500,
+                        fontSize: '0.925rem',
+                        transition: 'all 0.2s'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                        <Icon name={tab.icon} size={18} color={adminTab === tab.id ? '#191614' : 'var(--gold-primary)'} />
+                        <span>{tab.label}</span>
+                      </div>
+                      {tab.badge && (
+                        <span style={{ fontSize: '0.7rem', padding: '0.15rem 0.5rem', borderRadius: 'var(--radius-full)', background: 'rgba(255,255,255,0.1)', color: adminTab === tab.id ? '#191614' : 'var(--gold-light)' }}>
+                          {tab.badge}
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </nav>
+
+                <div style={{ padding: '1.25rem', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                  <button onClick={() => setCurrentView('home')} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', padding: '0.75rem', borderRadius: 'var(--radius-md)', background: 'rgba(255,255,255,0.06)', color: '#FAF8F5', fontSize: '0.875rem', fontWeight: 600, border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <Icon name="arrow-left" size={16} />
+                    <span>홈페이지로 돌아가기</span>
+                  </button>
+                </div>
+              </aside>
+
+              {/* Admin Main Body */}
+              <div style={{ flex: 1, marginLeft: '260px', padding: '2rem' }}>
+                {/* Admin Tab 1: Dashboard */}
+                {adminTab === 'dashboard' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>금등어 총괄 매니저 대시보드</h2>
+
+                    {/* KPI Cards */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem' }}>
+                      <div style={{ background: '#FFFFFF', padding: '1.5rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)' }}>
+                        <span style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>전체 고객 수</span>
+                        <h3 style={{ fontSize: '1.8rem', fontWeight: 800, margin: '0.35rem 0 0' }}>{stats.totalCustomers.toLocaleString()}명</h3>
+                      </div>
+                      <div style={{ background: '#FFFFFF', padding: '1.5rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)' }}>
+                        <span style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>누적 매출액</span>
+                        <h3 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--flame-primary)', margin: '0.35rem 0 0' }}>₩{stats.totalRevenue.toLocaleString()}</h3>
+                      </div>
+                      <div style={{ background: '#FFFFFF', padding: '1.5rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)' }}>
+                        <span style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>총 거래 건수</span>
+                        <h3 style={{ fontSize: '1.8rem', fontWeight: 800, margin: '0.35rem 0 0' }}>{stats.totalOrders.toLocaleString()}건</h3>
+                      </div>
+                      <div style={{ background: '#FFFFFF', padding: '1.5rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-light)' }}>
+                        <span style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>지급 누적 포인트</span>
+                        <h3 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--gold-dark)', margin: '0.35rem 0 0' }}>{stats.totalPoints.toLocaleString()}P</h3>
+                      </div>
+                    </div>
+
+                    {/* Grade Distribution & Realtime Registration */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '1.5rem' }}>
+                      <div style={{ background: '#FFFFFF', padding: '2rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)' }}>
+                        <h3 style={{ fontSize: '1.15rem', fontWeight: 800, marginBottom: '1.25rem' }}>고객 등급별 분포</h3>
+                        {['VIP', 'GOLD', 'SILVER', 'BRONZE', '일반'].map(gr => (
+                          <div key={gr} style={{ marginBottom: '0.75rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '0.25rem' }}>
+                              <span><strong>{gr}</strong> 등급</span>
+                              <span>{stats.gradeCounts[gr]}명</span>
+                            </div>
+                            <div style={{ height: '7px', background: '#EDE8E1', borderRadius: '4px', overflow: 'hidden' }}>
+                              <div style={{ height: '100%', width: `${(stats.gradeCounts[gr] / stats.totalCustomers) * 100}%`, background: 'var(--gold-primary)' }} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div style={{ background: '#FFFFFF', padding: '2rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)' }}>
+                        <h3 style={{ fontSize: '1.15rem', fontWeight: 800, marginBottom: '1.25rem' }}>실시간 신규 고객 등록 스트림</h3>
+                        {customers.slice(0, 4).map(c => (
+                          <div key={c.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', background: 'var(--bg-subtle)', borderRadius: 'var(--radius-sm)', marginBottom: '0.5rem' }}>
+                            <div>
+                              <strong>{c.name}</strong> ({c.grade})
+                              <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-muted)' }}>{c.phone} | {c.joinDate}</p>
+                            </div>
+                            <span style={{ color: 'var(--flame-primary)', fontWeight: 700 }}>+{c.points.toLocaleString()}P</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Admin Tab 2: Customer CRM */}
+                {adminTab === 'customers' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>고객관리 CRM (다중 필터링)</h2>
+                      <button onClick={exportToCsv} style={{ background: '#2E7D32', color: '#FFF', padding: '0.6rem 1rem', borderRadius: 'var(--radius-sm)', fontWeight: 700, fontSize: '0.85rem' }}>
+                        엑셀(CSV) 다운로드
+                      </button>
+                    </div>
+
+                    <div style={{ background: '#FFFFFF', padding: '1.5rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)' }}>
+                      <h3 style={{ fontSize: '1rem', fontWeight: 800, marginBottom: '1rem' }}>다중 조건 검색 필터 (성, 연령, 등급, 빈도, 금액)</h3>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.75rem' }}>
+                        <div>
+                          <label style={{ fontSize: '0.75rem', fontWeight: 700 }}>검색어</label>
+                          <input type="text" placeholder="이름/연락처" value={filters.searchQuery} onChange={(e) => setFilters({ ...filters, searchQuery: e.target.value })} style={{ width: '100%', padding: '0.5rem', background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '4px' }} />
+                        </div>
+                        <div>
+                          <label style={{ fontSize: '0.75rem', fontWeight: 700 }}>성별</label>
+                          <select value={filters.gender} onChange={(e) => setFilters({ ...filters, gender: e.target.value })} style={{ width: '100%', padding: '0.5rem', background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '4px' }}>
+                            <option value="all">전체</option>
+                            <option value="female">여성</option>
+                            <option value="male">남성</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label style={{ fontSize: '0.75rem', fontWeight: 700 }}>연령대</label>
+                          <select value={filters.ageGroup} onChange={(e) => setFilters({ ...filters, ageGroup: e.target.value })} style={{ width: '100%', padding: '0.5rem', background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '4px' }}>
+                            <option value="all">전체</option>
+                            <option value="20s">20대</option>
+                            <option value="30s">30대</option>
+                            <option value="40s">40대</option>
+                            <option value="50s">50대</option>
+                            <option value="60s">60대 이상</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label style={{ fontSize: '0.75rem', fontWeight: 700 }}>고객등급</label>
+                          <select value={filters.grade} onChange={(e) => setFilters({ ...filters, grade: e.target.value })} style={{ width: '100%', padding: '0.5rem', background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '4px' }}>
+                            <option value="all">전체</option>
+                            <option value="VIP">VIP</option>
+                            <option value="GOLD">GOLD</option>
+                            <option value="SILVER">SILVER</option>
+                            <option value="BRONZE">BRONZE</option>
+                            <option value="일반">일반</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{ background: '#FFFFFF', padding: '1.5rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', overflowX: 'auto' }}>
+                      <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem' }}>
+                        <thead>
+                          <tr style={{ borderBottom: '2px solid var(--border-light)' }}>
+                            <th style={{ padding: '0.75rem' }}>ID</th>
+                            <th style={{ padding: '0.75rem' }}>고객명</th>
+                            <th style={{ padding: '0.75rem' }}>연락처</th>
+                            <th style={{ padding: '0.75rem' }}>성별/연령</th>
+                            <th style={{ padding: '0.75rem' }}>등급</th>
+                            <th style={{ padding: '0.75rem' }}>누적구매액</th>
+                            <th style={{ padding: '0.75rem' }}>포인트</th>
+                            <th style={{ padding: '0.75rem' }}>최근방문일</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {filteredCustomers.map(c => (
+                            <tr key={c.id} style={{ borderBottom: '1px solid var(--border-light)' }}>
+                              <td style={{ padding: '0.75rem' }}>{c.id}</td>
+                              <td style={{ padding: '0.75rem', fontWeight: 700 }}>{c.name}</td>
+                              <td style={{ padding: '0.75rem' }}>{c.phone}</td>
+                              <td style={{ padding: '0.75rem' }}>{c.gender === 'female' ? '여' : '남'} · {c.ageGroup}</td>
+                              <td style={{ padding: '0.75rem' }}><span className="badge-gold">{c.grade}</span></td>
+                              <td style={{ padding: '0.75rem', fontWeight: 800, color: 'var(--flame-primary)' }}>₩{c.totalSpent.toLocaleString()}</td>
+                              <td style={{ padding: '0.75rem', fontWeight: 700, color: 'var(--gold-dark)' }}>{c.points.toLocaleString()}P</td>
+                              <td style={{ padding: '0.75rem', color: 'var(--text-muted)' }}>{c.recentVisit}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+
+                {/* Admin Tab 3: Reports */}
+                {adminTab === 'reports' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>통계 및 매출 리포트</h2>
+                    <div style={{ background: '#FFFFFF', padding: '2rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)' }}>
+                      <h3 style={{ fontSize: '1.15rem', fontWeight: 800, marginBottom: '1.5rem' }}>최근 7일 일별 매출 현황</h3>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '1rem', height: '180px', alignItems: 'flex-end' }}>
+                        {[
+                          { d: '목', val: 60, rev: '420만' },
+                          { d: '금', val: 80, rev: '580만' },
+                          { d: '토', val: 100, rev: '720만' },
+                          { d: '일', val: 95, rev: '690만' },
+                          { d: '월', val: 50, rev: '380만' },
+                          { d: '화', val: 58, rev: '410만' },
+                          { d: '오늘(수)', val: 65, rev: '465만' }
+                        ].map((x, i) => (
+                          <div key={i} style={{ textAlign: 'center' }}>
+                            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--flame-primary)' }}>{x.rev}</span>
+                            <div style={{ height: `${x.val}%`, background: x.d.includes('토') || x.d.includes('일') ? 'var(--gold-gradient)' : '#E0D8CE', borderRadius: '4px 4px 0 0', marginTop: '0.3rem' }} />
+                            <span style={{ fontSize: '0.8rem', fontWeight: 600, display: 'block', marginTop: '0.4rem' }}>{x.d}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Admin Tab 4: Hero Settings */}
+                {adminTab === 'hero' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>첫번째 섹션 (Hero) 비디오 & 카피 & 폰트 관리</h2>
+                    <form onSubmit={(e) => { e.preventDefault(); alert('첫번째 섹션 설정이 저장되었습니다!'); }} style={{ background: '#FFFFFF', padding: '2rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                      <div>
+                        <label style={{ fontSize: '0.85rem', fontWeight: 700, display: 'block', marginBottom: '0.35rem' }}>비디오 프리셋 선택</label>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                          {VIDEO_PRESETS.map(p => (
+                            <div key={p.id} onClick={() => setHeroSettings({ ...heroSettings, videoUrl: p.url })} style={{ border: heroSettings.videoUrl === p.url ? '2px solid var(--gold-primary)' : '1px solid var(--border-light)', borderRadius: '6px', padding: '0.5rem', cursor: 'pointer', background: heroSettings.videoUrl === p.url ? 'var(--bg-subtle)' : '#FFF' }}>
+                              <strong>{p.name}</strong>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label style={{ fontSize: '0.85rem', fontWeight: 700, display: 'block', marginBottom: '0.35rem' }}>메인 카피 (1줄)</label>
+                        <input type="text" value={heroSettings.mainCopy} onChange={(e) => setHeroSettings({ ...heroSettings, mainCopy: e.target.value })} style={{ width: '100%', padding: '0.75rem', background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '4px', fontWeight: 700 }} />
+                      </div>
+
+                      <div>
+                        <label style={{ fontSize: '0.85rem', fontWeight: 700, display: 'block', marginBottom: '0.35rem' }}>서브 카피 1</label>
+                        <input type="text" value={heroSettings.subCopy1} onChange={(e) => setHeroSettings({ ...heroSettings, subCopy1: e.target.value })} style={{ width: '100%', padding: '0.75rem', background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '4px' }} />
+                      </div>
+
+                      <div>
+                        <label style={{ fontSize: '0.85rem', fontWeight: 700, display: 'block', marginBottom: '0.35rem' }}>서브 카피 2</label>
+                        <input type="text" value={heroSettings.subCopy2} onChange={(e) => setHeroSettings({ ...heroSettings, subCopy2: e.target.value })} style={{ width: '100%', padding: '0.75rem', background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '4px' }} />
+                      </div>
+
+                      <button type="submit" className="btn-primary" style={{ padding: '0.85rem' }}>
+                        설정 저장하고 홈페이지에 즉시 반영
+                      </button>
+                    </form>
+                  </div>
+                )}
+
+                {/* Admin Tab 5: Popups */}
+                {adminTab === 'popups' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>이벤트 & 공지 팝업 관리</h2>
+                    <div style={{ background: '#FFFFFF', padding: '2rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)' }}>
+                      {popups.map(p => (
+                        <div key={p.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', borderBottom: '1px solid var(--border-light)' }}>
+                          <div>
+                            <strong>{p.title}</strong>
+                            <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-muted)' }}>{p.description}</p>
+                          </div>
+                          <button onClick={() => setPopups(popups.map(x => x.id === p.id ? { ...x, isActive: !x.isActive } : x))} style={{ background: p.isActive ? '#E8F5E9' : '#EEE', color: p.isActive ? '#2E7D32' : '#666', padding: '0.35rem 0.8rem', borderRadius: 'var(--radius-full)', fontWeight: 700, fontSize: '0.78rem' }}>
+                            {p.isActive ? '현재 노출중' : '비활성'}
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Modals */}
+          {selectedMenu && (
+            <div style={{ position: 'fixed', inset: 0, zIndex: 2000, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }} onClick={() => setSelectedMenu(null)}>
+              <div style={{ background: '#FFF', borderRadius: 'var(--radius-lg)', maxWidth: '540px', width: '100%', overflow: 'hidden' }} onClick={e => e.stopPropagation()}>
+                <img src={selectedMenu.image} alt={selectedMenu.name} style={{ width: '100%', height: '240px', objectFit: 'cover' }} />
+                <div style={{ padding: '2rem' }}>
+                  <h3 style={{ fontSize: '1.6rem', fontWeight: 800 }}>{selectedMenu.name}</h3>
+                  <p style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--flame-primary)', margin: '0.5rem 0 1rem' }}>₩{selectedMenu.price.toLocaleString()}</p>
+                  <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.5rem' }}>{selectedMenu.description}</p>
+                  <button onClick={() => setSelectedMenu(null)} className="btn-primary" style={{ width: '100%', padding: '0.85rem' }}>닫기</button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {authModalOpen && (
+            <div style={{ position: 'fixed', inset: 0, zIndex: 2000, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }} onClick={() => setAuthModalOpen(false)}>
+              <div style={{ background: '#FFF', borderRadius: 'var(--radius-lg)', maxWidth: '440px', width: '100%', padding: '2rem' }} onClick={e => e.stopPropagation()}>
+                <h3 style={{ fontSize: '1.4rem', fontWeight: 800, textAlign: 'center', marginBottom: '1rem' }}>
+                  {authMode === 'login' ? '금등어 회원 로그인' : '금등어 회원가입'}
+                </h3>
+                <form onSubmit={(e) => { e.preventDefault(); setUser({ name: '금등어 VIP 회원' }); setAuthModalOpen(false); }} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <input type="email" required placeholder="이메일 주소" style={{ padding: '0.75rem', background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '4px' }} />
+                  <input type="password" required placeholder="비밀번호" style={{ padding: '0.75rem', background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '4px' }} />
+                  <button type="submit" className="btn-primary" style={{ padding: '0.85rem' }}>
+                    {authMode === 'login' ? '로그인' : '회원가입 완료'}
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {activePopup && (
+            <div style={{ position: 'fixed', inset: 0, zIndex: 1900, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }} onClick={() => setActivePopup(null)}>
+              <div style={{ background: '#FFF', borderRadius: 'var(--radius-lg)', maxWidth: '420px', width: '100%', overflow: 'hidden' }} onClick={e => e.stopPropagation()}>
+                <img src={activePopup.imageUrl} alt={activePopup.title} style={{ width: '100%', height: '180px', objectFit: 'cover' }} />
+                <div style={{ padding: '1.5rem' }}>
+                  <span className="badge-gold" style={{ marginBottom: '0.5rem' }}>{activePopup.badge}</span>
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0.5rem 0' }}>{activePopup.title}</h3>
+                  <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '1.25rem' }}>{activePopup.description}</p>
+                  <button onClick={() => setActivePopup(null)} className="btn-primary" style={{ width: '100%', padding: '0.75rem' }}>{activePopup.linkText}</button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
